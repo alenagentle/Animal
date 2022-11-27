@@ -23,9 +23,8 @@ public class AnimalManager {
         var stringAnimal = AnimalConverter.convert(animalsDto);
         var animal = new Animal();
         animal.setResult(stringAnimal);
-        animalRepository.save(animal);
         log.info("Animal saved");
-        return animal;
+        return animalRepository.save(animal);
     }
 
 }

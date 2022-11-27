@@ -2,6 +2,7 @@ package com.diasoft.animals.service;
 
 import com.diasoft.animals.dto.AnimalDTO;
 import com.diasoft.animals.dto.AnimalResponse;
+import com.diasoft.animals.entity.Animal;
 import com.diasoft.animals.exception.EmptyElementsException;
 import com.diasoft.animals.exception.EmptyNameElementsException;
 import com.diasoft.animals.manager.AnimalManager;
@@ -18,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -41,9 +43,11 @@ class AnimalServiceImplTest {
         var animalsDto = buildListAnimalsDto();
 
         when(animalClient.getAnimals()).thenReturn(animalsDto);
-
         var convertedAnimal = AnimalConverter.convert(animalsDto);
-        var expectedAnimal = buildResultAnimal(convertedAnimal);
+        var animal = buildAnimal(convertedAnimal);
+        var expectedAnimal = animalMapper.animalToAnimalResponse(animal);
+
+        when(animalRepository.save(any())).thenReturn(animal);
         var actualAnimalResponse = animalServiceImpl.createAnimal();
 
         assertEquals(AnimalResponse.substringUID(actualAnimalResponse), AnimalResponse.substringUID(expectedAnimal));
@@ -94,8 +98,8 @@ class AnimalServiceImplTest {
         return animalDTO;
     }
 
-    private AnimalResponse buildResultAnimal(String resultAnimal) {
-        var animal = new AnimalResponse();
+    private Animal buildAnimal(String resultAnimal) {
+        var animal = new Animal();
         animal.setResult(resultAnimal);
         return animal;
     }
