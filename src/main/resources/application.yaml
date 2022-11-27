@@ -1,0 +1,23 @@
+server:
+  port: ${SERVER.PORT:8080}
+
+spring:
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+feign:
+  log:
+    level: ${LOG_LEVEL_FEIGN:FULL}
+
+animalClient:
+  url: ${CLIENT_URL:http://localhost:9565}
+
+logging:
+  file:
+    name: ${LOG_PATH:animal.log}
+  pattern:
+    console: '%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID}){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(%M{20}){magenta} %clr(:){faint} %m%n}}'
+    file: '%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID} --- [%t] %-40.40logger{39} %M{20} : %m%n}'
